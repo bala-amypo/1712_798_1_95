@@ -9,17 +9,21 @@ public class BudgetPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int month;
-    private int year;
-    private double expenseLimit;
+    private Integer month;
+    private Integer year;
+    private Double expenseLimit;
 
     @ManyToOne
     private User user;
 
     public BudgetPlan() {}
 
-    public int getMonth() { return month; }
-    public int getYear() { return year; }
-    public double getExpenseLimit() { return expenseLimit; }
+    public Integer getMonth() { return month; }
+    public Integer getYear() { return year; }
+    public Double getExpenseLimit() { return expenseLimit; }
     public User getUser() { return user; }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
