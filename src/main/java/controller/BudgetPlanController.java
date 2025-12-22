@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.BudgetPlan;
 import com.example.demo.service.BudgetPlanService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,20 +16,26 @@ public class BudgetPlanController {
         this.budgetPlanService = budgetPlanService;
     }
 
-    @PostMapping("/{userId}")
-    public BudgetPlan createPlan(
-            @PathVariable Long userId,
-            @RequestBody BudgetPlan plan) {
+    @PostMapping
+    public BudgetPlan createPlan(@RequestBody BudgetPlan plan) {
 
+        Long userId = getCurrentUserId();
         return budgetPlanService.createBudgetPlan(userId, plan);
     }
 
-    @GetMapping("/{userId}/{month}/{year}")
+    @GetMapping("/{month}/{year}")
     public BudgetPlan getPlan(
-            @PathVariable Long userId,
             @PathVariable Integer month,
             @PathVariable Integer year) {
 
+        Long userId = getCurrentUserId();
         return budgetPlanService.getBudgetPlan(userId, month, year);
+    }
+
+    private Long getCurrentUserId() {
+        Authentication auth =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        return Long.parseLong(auth.getName());
     }
 }

@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.BudgetSummary;
 import com.example.demo.service.BudgetSummaryService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,11 +18,18 @@ public class BudgetSummaryController {
 
     @PostMapping("/generate/{budgetPlanId}")
     public BudgetSummary generate(@PathVariable Long budgetPlanId) {
-        return budgetSummaryService.generateSummary(budgetPlanId);
+        Long userId = getCurrentUserId();
+        return budgetSummaryService.generateSummary(userId, budgetPlanId);
     }
 
     @GetMapping("/{budgetPlanId}")
     public BudgetSummary get(@PathVariable Long budgetPlanId) {
-        return budgetSummaryService.getSummary(budgetPlanId);
+        Long userId = getCurrentUserId();
+        return budgetSummaryService.getSummary(userId, budgetPlanId);
+    }
+
+    private Long getCurrentUserId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return Long.parseLong(auth.getName());
     }
 }

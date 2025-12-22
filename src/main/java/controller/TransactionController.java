@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.TransactionLog;
 import com.example.demo.service.TransactionService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,18 +18,20 @@ public class TransactionController {
         this.transactionService = transactionService;
     }
 
-    @PostMapping("/{userId}")
-    public TransactionLog addTransaction(
-            @PathVariable Long userId,
-            @RequestBody TransactionLog log) {
-
+    @PostMapping
+    public TransactionLog addTransaction(@RequestBody TransactionLog log) {
+        Long userId = getCurrentUserId();
         return transactionService.addTransaction(userId, log);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<TransactionLog> getUserTransactions(
-            @PathVariable Long userId) {
-
+    @GetMapping
+    public List<TransactionLog> getUserTransactions() {
+        Long userId = getCurrentUserId();
         return transactionService.getUserTransactions(userId);
+    }
+
+    private Long getCurrentUserId() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return Long.parseLong(auth.getName());
     }
 }
