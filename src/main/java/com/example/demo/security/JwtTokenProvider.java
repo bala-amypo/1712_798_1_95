@@ -1,18 +1,15 @@
 package com.example.demo.security;
 
 import io.jsonwebtoken.*;
-import org.springframework.stereotype.Component;
 import java.util.Date;
 
-@Component
 public class JwtTokenProvider {
 
-    private final String secret = "mysecretkey123456";
-    private final long validity = 86400000;
-
-    public JwtTokenProvider() {}
+    private String secret;
+    private long validity;
 
     public JwtTokenProvider(String secret, long validity) {
+        this.secret = secret;
         this.validity = validity;
     }
 
@@ -34,13 +31,5 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public Long getUserIdFromToken(String token) {
-        return Long.parseLong(
-                Jwts.parser().setSigningKey(secret)
-                        .parseClaimsJws(token)
-                        .getBody().getSubject()
-        );
     }
 }
