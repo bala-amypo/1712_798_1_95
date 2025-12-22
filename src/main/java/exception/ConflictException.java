@@ -1,7 +1,5 @@
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+package com.example.demo.exception;
 
-@ResponseStatus(HttpStatus.CONFLICT)
 public class ConflictException extends RuntimeException {
     public ConflictException(String message) {
         super(message);
