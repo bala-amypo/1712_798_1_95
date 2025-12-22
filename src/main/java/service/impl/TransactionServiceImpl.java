@@ -1,10 +1,8 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.TransactionLog;
 import com.example.demo.model.User;
-import com.example.demo.repository.TransactionRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.TransactionLogRepository;
 import com.example.demo.service.TransactionService;
 import org.springframework.stereotype.Service;
 
@@ -13,25 +11,20 @@ import java.util.List;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionRepository repo;
-    private final UserRepository userRepo;
+    private final TransactionLogRepository repository;
 
-    public TransactionServiceImpl(TransactionRepository repo, UserRepository userRepo) {
-        this.repo = repo;
-        this.userRepo = userRepo;
+    public TransactionServiceImpl(TransactionLogRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public TransactionLog addTransaction(Long userId, TransactionLog log) {
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
+    public TransactionLog addTransaction(TransactionLog log, User user) {
         log.setUser(user);
-        return repo.save(log);
+        return repository.save(log);
     }
 
     @Override
-    public List<TransactionLog> getUserTransactions(Long userId) {
-        return repo.findByUserId(userId);
+    public List<TransactionLog> getTransactions(User user) {
+        return repository.findByUser(user);
     }
 }
