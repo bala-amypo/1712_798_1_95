@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.controller;
 
 import jakarta.persistence.*;
 import com.example.demo.exception.BadRequestException;
