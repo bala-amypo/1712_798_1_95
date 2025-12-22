@@ -1,49 +1,30 @@
-package com.example.demo.model;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
-import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.Category;
+import com.example.demo.service.CategoryService;
+import org.springframework.web.bind.annotation.*;
 
-@Entity
-@Table(name = "categories")
-public class Category {
+import java.util.List;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@RestController
+@RequestMapping("/categories")
+public class CategoryController {
 
-    @Column(unique = true, nullable = false)
-    private String name;
+    private final CategoryService categoryService;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private CategoryType type;
-
-    public Category() {}
-
-    public Category(Long id, String name, CategoryType type) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
-    public void validateType() {
-        if (type == null) {
-            throw new BadRequestException("Category type cannot be null");
-        }
+    // Add a new category
+    @PostMapping
+    public Category addCategory(@RequestBody Category category) {
+        return categoryService.addCategory(category);
     }
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public CategoryType getType() { return type; }
-    public void setType(CategoryType type) { this.type = type; }
-}
-
-// Enum for category type
-package com.example.demo.model;
-
-public enum CategoryType {
-    INCOME, EXPENSE
+    // Get all categories
+    @GetMapping
+    public List<Category> getAllCategories() {
+        return categoryService.getAllCategories();
+    }
 }
