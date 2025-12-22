@@ -35,7 +35,9 @@ public class AuthController {
                     HttpStatus.BAD_REQUEST, "Email already exists");
         }
 
-        User user = new User();
+         User user = userRepository.findByEmail(request.getEmail())
+        .orElseThrow(() -> new RuntimeException("User not found"));
+
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());
