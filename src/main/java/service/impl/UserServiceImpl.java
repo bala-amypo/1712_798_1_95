@@ -1,9 +1,10 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.Role;
+import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import com.example.demo.model.User;
-import com.example.demo.exception.BadRequestException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,18 +21,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(User user) {
-        if (user.getEmail() == null || user.getPassword() == null) {
-            throw new BadRequestException("Email and password are required");
-        }
-
         if (repo.existsByEmail(user.getEmail())) {
-            throw new BadRequestException("Email exists");
+            throw new BadRequestException("Email already exists");
         }
 
         user.setPassword(encoder.encode(user.getPassword()));
 
         if (user.getRole() == null) {
-            user.setRole("USER");
+            user.setRole(Role.USER);
         }
 
         return repo.save(user);
