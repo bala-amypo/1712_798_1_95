@@ -11,18 +11,28 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TransactionLog> transactions;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BudgetPlan> budgetPlans;
 
     public User() {}
 
-    public User(Long id, String name, String email, String password, String role) {
+    public User(Long id, String name, String email, String password, Role role) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -30,11 +40,24 @@ public class User {
         this.role = role;
     }
 
-    @OneToMany(mappedBy = "user")
-    private List<TransactionLog> transactions;
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
+    public List<TransactionLog> getTransactions() { return transactions; }
+    public void setTransactions(List<TransactionLog> transactions) { this.transactions = transactions; }
+    public List<BudgetPlan> getBudgetPlans() { return budgetPlans; }
+    public void setBudgetPlans(List<BudgetPlan> budgetPlans) { this.budgetPlans = budgetPlans; }
+}
 
-    @OneToMany(mappedBy = "user")
-    private List<BudgetPlan> budgetPlans;
-
-    // getters and setters
+enum Role {
+    USER,
+    ADMIN
 }
