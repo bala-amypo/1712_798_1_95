@@ -10,19 +10,48 @@ public class TransactionLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double amount;
-    private LocalDate transactionDate;
+    private Double amount;
+    private String type;
+    private LocalDate date;
 
     @ManyToOne
     private User user;
 
-    @ManyToOne
-    private Category category;
-
     public TransactionLog() {}
 
-    public double getAmount() { return amount; }
-    public LocalDate getTransactionDate() { return transactionDate; }
-    public User getUser() { return user; }
-    public Category getCategory() { return category; }
+    public Long getId() {
+        return id;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
