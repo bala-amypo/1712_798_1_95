@@ -9,11 +9,10 @@ import org.springframework.context.annotation.Configuration;
 public class OpenApiConfig {
 
     @Bean
-    public OpenAPI customOpenAPI() {
+    public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Personal Finance Budget Planner API")
-                        .version("1.0")
-                        .description("Spring Boot REST API"));
+                        .title("Personal Finance Budget Planner")
+                        .version("1.0"));
     }
 }
