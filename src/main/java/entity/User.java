@@ -10,18 +10,15 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @Column(unique = true)
     private String email;
+
     private String password;
+
     private String role;
-
-    @OneToMany(mappedBy = "user")
-    private List<TransactionLog> transactions;
-
-    @OneToMany(mappedBy = "user")
-    private List<BudgetPlan> budgetPlans;
 
     public User() {}
 
@@ -32,6 +29,12 @@ public class User {
         this.password = password;
         this.role = role;
     }
+
+    @OneToMany(mappedBy = "user")
+    private List<TransactionLog> transactions;
+
+    @OneToMany(mappedBy = "user")
+    private List<BudgetPlan> budgetPlans;
 
     // getters and setters
 }

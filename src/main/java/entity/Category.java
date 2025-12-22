@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
-import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
+import com.example.demo.exception.BadRequestException;
 
 @Entity
 @Table(name = "categories")
@@ -13,7 +13,10 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
     private String name;
+
     private String type;
 
     public Category() {}

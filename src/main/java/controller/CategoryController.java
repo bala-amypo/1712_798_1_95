@@ -1,28 +1,37 @@
-package com.example.demo.controller;
+package com.example.demo.model;
 
-import com.example.demo.model.Category;
-import com.example.demo.service.CategoryService;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
+import com.example.demo.exception.BadRequestException;
 
-import java.util.List;
+@Entity
+@Table(name = "categories")
+public class Category {
 
-@RestController
-@RequestMapping("/categories")
-public class CategoryController {
+    public static final String TYPE_INCOME = "INCOME";
+    public static final String TYPE_EXPENSE = "EXPENSE";
 
-    private final CategoryService categoryService;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public CategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
+    @Column(unique = true)
+    private String name;
+
+    private String type;
+
+    public Category() {}
+
+    public Category(Long id, String name, String type) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
     }
 
-    @PostMapping
-    public Category create(@RequestBody Category category) {
-        return categoryService.addCategory(category);
+    public void validateType() {
+        if (!TYPE_INCOME.equals(type) && !TYPE_EXPENSE.equals(type)) {
+            throw new BadRequestException("Invalid category type");
+        }
     }
 
-    @GetMapping
-    public List<Category> getAll() {
-        return categoryService.getAllCategories();
-    }
+    // getters and setters
 }

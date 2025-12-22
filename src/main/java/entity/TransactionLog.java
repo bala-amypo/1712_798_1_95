@@ -1,8 +1,8 @@
 package com.example.demo.model;
 
-import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import com.example.demo.exception.BadRequestException;
 
 @Entity
 @Table(name = "transaction_logs")
@@ -35,12 +35,10 @@ public class TransactionLog {
     }
 
     public void validate() {
-        if (amount <= 0) {
-            throw new BadRequestException("Amount must be > 0");
-        }
-        if (transactionDate.isAfter(LocalDate.now())) {
+        if (amount <= 0)
+            throw new BadRequestException("Amount must be positive");
+        if (transactionDate.isAfter(LocalDate.now()))
             throw new BadRequestException("Future date not allowed");
-        }
     }
 
     // getters and setters

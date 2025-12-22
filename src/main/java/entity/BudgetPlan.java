@@ -1,7 +1,7 @@
 package com.example.demo.model;
 
-import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
+import com.example.demo.exception.BadRequestException;
 
 @Entity
 @Table(name = "budget_plans")
@@ -19,13 +19,10 @@ public class BudgetPlan {
     private Double incomeTarget;
     private Double expenseLimit;
 
-    @OneToOne(mappedBy = "budgetPlan")
-    private BudgetSummary summary;
-
     public BudgetPlan() {}
 
-    public BudgetPlan(Long id, User user, Integer month, Integer year,
-                      Double incomeTarget, Double expenseLimit) {
+    public BudgetPlan(Long id, User user, Integer month,
+                      Integer year, Double incomeTarget, Double expenseLimit) {
         this.id = id;
         this.user = user;
         this.month = month;
@@ -35,12 +32,10 @@ public class BudgetPlan {
     }
 
     public void validate() {
-        if (month < 1 || month > 12) {
+        if (month < 1 || month > 12)
             throw new BadRequestException("Invalid month");
-        }
-        if (incomeTarget < 0 || expenseLimit < 0) {
+        if (incomeTarget < 0 || expenseLimit < 0)
             throw new BadRequestException("Negative values not allowed");
-        }
     }
 
     // getters and setters
