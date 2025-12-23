@@ -1,31 +1,50 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class BudgetSummary {
-
-    public static final String STATUS_UNDER_LIMIT = "UNDER_LIMIT";
-    public static final String STATUS_OVER_LIMIT = "OVER_LIMIT";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private BudgetPlan budgetPlan;
+    private Double totalIncome;
+    private Double totalExpense;
+    private Double savings;
 
-    private double totalIncome;
-    private double totalExpense;
-    private String status;
-    private LocalDateTime generatedAt;
+    public Long getId() {
+        return id;
+    }
 
-    public BudgetSummary() {}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public void setBudgetPlan(BudgetPlan plan) { this.budgetPlan = plan; }
-    public void setTotalIncome(double income) { this.totalIncome = income; }
-    public void setTotalExpense(double expense) { this.totalExpense = expense; }
-    public void setStatus(String status) { this.status = status; }
-    public void setGeneratedAt(LocalDateTime time) { this.generatedAt = time; }
+    public Double getTotalIncome() {
+        return totalIncome;
+    }
+
+    public void setTotalIncome(Double totalIncome) {
+        this.totalIncome = totalIncome;
+    }
+
+    public Double getTotalExpense() {
+        return totalExpense;
+    }
+
+    public void setTotalExpense(Double totalExpense) {
+        this.totalExpense = totalExpense;
+    }
+
+    public Double getSavings() {
+        return savings;
+    }
+
+    public void setSavings(Double savings) {
+        this.savings = savings;
+    }
 }

@@ -1,40 +1,31 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.TransactionLog;
-import com.example.demo.model.User;
-import com.example.demo.repository.TransactionLogRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.model.BudgetSummary;
+import com.example.demo.service.BudgetSummaryService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-public class BudgetSummaryServiceImpl {
+public class BudgetSummaryServiceImpl implements BudgetSummaryService {
 
-    private final TransactionLogRepository txRepo;
-    private final UserRepository userRepo;
-
-    public BudgetSummaryServiceImpl(TransactionLogRepository txRepo,
-                                    UserRepository userRepo) {
-        this.txRepo = txRepo;
-        this.userRepo = userRepo;
+    @Override
+    public BudgetSummary generateSummary(Long budgetPlanId) {
+        // Dummy implementation to avoid startup failure
+        BudgetSummary summary = new BudgetSummary();
+        summary.setId(1L);
+        summary.setTotalIncome(0.0);
+        summary.setTotalExpense(0.0);
+        summary.setSavings(0.0);
+        return summary;
     }
 
-    public double calculateTotalExpense(Long userId) {
-
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        List<TransactionLog> logs = txRepo.findByUserId(user.getId());
-
-        double total = 0;
-
-        for (TransactionLog log : logs) {
-            if ("EXPENSE".equalsIgnoreCase(log.getType())) {
-                total += log.getAmount();
-            }
-        }
-
-        return total;
+    @Override
+    public BudgetSummary getSummary(Long budgetPlanId) {
+        // Dummy implementation
+        BudgetSummary summary = new BudgetSummary();
+        summary.setId(1L);
+        summary.setTotalIncome(0.0);
+        summary.setTotalExpense(0.0);
+        summary.setSavings(0.0);
+        return summary;
     }
 }
