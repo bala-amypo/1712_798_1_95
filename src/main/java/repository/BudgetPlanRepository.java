@@ -1,16 +1,13 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.BudgetPlan;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import com.example.demo.model.BudgetPlan;
 
-import java.util.Optional;
+@Repository
+public interface BudgetPlanRepository
+        extends JpaRepository<BudgetPlan, Long> {
 
-public interface BudgetPlanRepository extends JpaRepository<BudgetPlan, Long> {
-
-
-    Optional<BudgetPlan> findByUserIdAndMonthAndYear(
-            Long userId,
-            Integer month,
-            Integer year
-    );
+    // Optional custom query methods (if needed later)
+    // List<BudgetPlan> findByName(String name);
 }
