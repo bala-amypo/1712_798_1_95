@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "budget_plans")
@@ -11,65 +10,25 @@ public class BudgetPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
+    private Long userId;
+    private Integer month;
+    private Integer year;
+    private Double totalAmount;
 
-    @Column(nullable = false)
-    private Double amount;
+    public BudgetPlan() {}
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    // ✅ REQUIRED: No-arg constructor
-    public BudgetPlan() {
-    }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
-    // Optional constructor
-    public BudgetPlan(String name, Double amount, LocalDate startDate, LocalDate endDate) {
-        this.name = name;
-        this.amount = amount;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
+    public Integer getMonth() { return month; }
+    public void setMonth(Integer month) { this.month = month; }
 
-    // ✅ Getters & Setters
-    public Long getId() {
-        return id;
-    }
+    public Integer getYear() { return year; }
+    public void setYear(Integer year) { this.year = year; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
+    public Double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(Double totalAmount) { this.totalAmount = totalAmount; }
 }
