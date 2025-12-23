@@ -1,26 +1,26 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.BudgetSummary;
-import com.example.demo.repository.BudgetSummaryRepository;
+import com.example.demo.service.BudgetSummaryService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/summary")
+@RequestMapping("/api/summary")
 public class BudgetSummaryController {
 
-    private final BudgetSummaryRepository repo;
+    private final BudgetSummaryService service;
 
-    public BudgetSummaryController(BudgetSummaryRepository repo) {
-        this.repo = repo;
+    public BudgetSummaryController(BudgetSummaryService service) {
+        this.service = service;
     }
 
-    @PostMapping
-    public BudgetSummary generate(@RequestBody BudgetSummary summary) {
-        return repo.save(summary);
+    @PostMapping("/{planId}")
+    public BudgetSummary generate(@PathVariable Long planId) {
+        return service.generateSummary(planId);
     }
 
-    @GetMapping("/{budgetPlanId}")
-    public BudgetSummary get(@PathVariable Long budgetPlanId) {
-        return repo.findByBudgetPlanId(budgetPlanId).orElse(null);
+    @GetMapping("/{planId}")
+    public BudgetSummary get(@PathVariable Long planId) {
+        return service.getSummary(planId);
     }
 }
