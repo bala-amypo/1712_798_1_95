@@ -1,50 +1,70 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "budget_summaries")
 public class BudgetSummary {
-
+    
+    public static final String STATUS_UNDER_LIMIT = "UNDER_LIMIT";
+    public static final String STATUS_OVER_LIMIT = "OVER_LIMIT";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "budget_plan_id", nullable = false, unique = true)
+    private BudgetPlan budgetPlan;
+    
+    @Column(nullable = false)
     private Double totalIncome;
+    
+    @Column(nullable = false)
     private Double totalExpense;
-    private Double savings;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
+    
+    @Column(nullable = false)
+    private String status;
+    
+    @Column(nullable = false)
+    private LocalDateTime generatedAt;
+    
+    public BudgetSummary() {}
+    
+    public BudgetSummary(Long id, BudgetPlan budgetPlan, Double totalIncome, 
+                        Double totalExpense, String status, LocalDateTime generatedAt) {
         this.id = id;
-    }
-
-    public Double getTotalIncome() {
-        return totalIncome;
-    }
-
-    public void setTotalIncome(Double totalIncome) {
+        this.budgetPlan = budgetPlan;
         this.totalIncome = totalIncome;
-    }
-
-    public Double getTotalExpense() {
-        return totalExpense;
-    }
-
-    public void setTotalExpense(Double totalExpense) {
         this.totalExpense = totalExpense;
+        this.status = status;
+        this.generatedAt = generatedAt;
     }
-
-    public Double getSavings() {
-        return savings;
+    
+    @PrePersist
+    protected void onCreate() {
+        if (generatedAt == null) {
+            generatedAt = LocalDateTime.now();
+        }
     }
-
-    public void setSavings(Double savings) {
-        this.savings = savings;
-    }
+    
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public BudgetPlan getBudgetPlan() { return budgetPlan; }
+    public void setBudgetPlan(BudgetPlan budgetPlan) { this.budgetPlan = budgetPlan; }
+    
+    public Double getTotalIncome() { return totalIncome; }
+    public void setTotalIncome(Double totalIncome) { this.totalIncome = totalIncome; }
+    
+    public Double getTotalExpense() { return totalExpense; }
+    public void setTotalExpense(Double totalExpense) { this.totalExpense = totalExpense; }
+    
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    
+    public LocalDateTime getGeneratedAt() { return generatedAt; }
+    public void setGeneratedAt(LocalDateTime generatedAt) { this.generatedAt = generatedAt; }
 }
