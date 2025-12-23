@@ -11,8 +11,6 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI openAPI() {
         return new OpenAPI()
-                .info(new Info()
-                        .title("Personal Finance Budget Planner")
-                        .version("1.0"));
+               .servers(List.of(.servers))
     }
 }
