@@ -12,12 +12,12 @@ import java.util.List;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionLogRepository logRepo;
+    private final TransactionLogRepository transactionRepo;
     private final UserRepository userRepo;
 
-    public TransactionServiceImpl(TransactionLogRepository logRepo,
+    public TransactionServiceImpl(TransactionLogRepository transactionRepo,
                                   UserRepository userRepo) {
-        this.logRepo = logRepo;
+        this.transactionRepo = transactionRepo;
         this.userRepo = userRepo;
     }
 
@@ -25,14 +25,13 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionLog addTransaction(TransactionLog log, Long userId) {
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         log.setUser(user);
-        return logRepo.save(log);
+        return transactionRepo.save(log);
     }
 
     @Override
     public List<TransactionLog> getUserTransactions(Long userId) {
-        User user = userRepo.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return logRepo.findByUser(user);
+        return transactionRepo.findByUserId(userId);
     }
 }
