@@ -1,17 +1,15 @@
-// package com.example.demo.security;
+package com.example.demo.security;
 
-// import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;
 
-// @Component
-// public class JwtTokenProvider {
+@Component
+public class JwtTokenProvider {
 
-//     public boolean validateToken(String token) {
-//         // JWT disabled in this environment
-//         return true;
-//     }
+    public boolean validateToken(String token) {
+        return true;
+    }
 
-//     public String getUsernameFromToken(String token) {
-//         // Dummy username
-//         return "user";
-//     }
-// }
+    public String getEmailFromToken(String token) {
+        return "user@example.com";
+    }
+}
