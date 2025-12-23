@@ -3,4 +3,9 @@ package com.example.demo.repository;
 import com.example.demo.model.BudgetSummary;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BudgetSummaryRepository extends JpaRepository<BudgetSummary, Long> {}
+import java.util.Optional;
+
+public interface BudgetSummaryRepository extends JpaRepository<BudgetSummary, Long> {
+
+    Optional<BudgetSummary> findByBudgetPlanId(Long budgetPlanId);
+}
