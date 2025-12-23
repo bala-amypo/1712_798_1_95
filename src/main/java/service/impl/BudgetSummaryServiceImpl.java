@@ -13,18 +13,22 @@ public class BudgetSummaryServiceImpl implements BudgetSummaryService {
     private final BudgetPlanRepository planRepo;
     private final BudgetSummaryRepository summaryRepo;
 
-    public BudgetSummaryServiceImpl(BudgetPlanRepository planRepo,
-                                    BudgetSummaryRepository summaryRepo) {
+    public BudgetSummaryServiceImpl(
+            BudgetPlanRepository planRepo,
+            BudgetSummaryRepository summaryRepo) {
         this.planRepo = planRepo;
         this.summaryRepo = summaryRepo;
     }
 
     @Override
     public BudgetSummary generateSummary(Long budgetPlanId) {
-        BudgetPlan plan = planRepo.findById(budgetPlanId).orElseThrow();
+
+        BudgetPlan plan = planRepo.findById(budgetPlanId)
+                .orElseThrow(() -> new RuntimeException("Budget Plan not found"));
 
         BudgetSummary summary = new BudgetSummary();
-        summary.setBudgetPlan(plan);
+        summary.setBudgetPlanId(plan.getId());
+        summary.setTotalBudget(plan.getTotalAmount());
         summary.setRemainingAmount(plan.getTotalAmount());
 
         return summaryRepo.save(summary);
@@ -32,10 +36,7 @@ public class BudgetSummaryServiceImpl implements BudgetSummaryService {
 
     @Override
     public BudgetSummary getSummary(Long budgetPlanId) {
-        return summaryRepo.findAll()
-                .stream()
-                .filter(s -> s.getBudgetPlan().getId().equals(budgetPlanId))
-                .findFirst()
-                .orElse(null);
+        return summaryRepo.findByBudgetPlanId(budgetPlanId)
+                .orElseThrow(() -> new RuntimeException("Summary not found"));
     }
 }
