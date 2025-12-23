@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class BudgetSummary {
@@ -10,30 +9,22 @@ public class BudgetSummary {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long budgetPlanId;
-    private Double totalIncome;
-    private Double totalExpense;
-    private String status;
+    private Double remainingAmount;
 
-    private LocalDateTime generatedAt;
+    @OneToOne
+    private BudgetPlan budgetPlan;
 
-    @PrePersist
-    public void onCreate() {
-        generatedAt = LocalDateTime.now();
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public Double getRemainingAmount() { return remainingAmount; }
+    public void setRemainingAmount(Double remainingAmount) {
+        this.remainingAmount = remainingAmount;
     }
 
-    public BudgetSummary() {}
-
-    public Long getId() { return id; }
-    public Long getBudgetPlanId() { return budgetPlanId; }
-    public Double getTotalIncome() { return totalIncome; }
-    public Double getTotalExpense() { return totalExpense; }
-    public String getStatus() { return status; }
-    public LocalDateTime getGeneratedAt() { return generatedAt; }
-
-    public void setId(Long id) { this.id = id; }
-    public void setBudgetPlanId(Long budgetPlanId) { this.budgetPlanId = budgetPlanId; }
-    public void setTotalIncome(Double totalIncome) { this.totalIncome = totalIncome; }
-    public void setTotalExpense(Double totalExpense) { this.totalExpense = totalExpense; }
-    public void setStatus(String status) { this.status = status; }
+    public BudgetPlan getBudgetPlan() { return budgetPlan; }
+    public void setBudgetPlan(BudgetPlan budgetPlan) {
+        this.budgetPlan = budgetPlan;
+    }
 }

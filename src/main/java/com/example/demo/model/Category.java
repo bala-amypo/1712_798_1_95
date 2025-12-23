@@ -9,18 +9,12 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String name;
 
-    private String type; // INCOME / EXPENSE
-
-    public Category() {}
-
+    // getters & setters
     public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getType() { return type; }
-
     public void setId(Long id) { this.id = id; }
+
+    public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public void setType(String type) { this.type = type; }
 }

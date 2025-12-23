@@ -9,25 +9,18 @@ public class BudgetPlan {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-    private Integer month;
-    private Integer year;
-    private Double incomeTarget;
-    private Double expenseLimit;
+    private Double totalAmount;
 
-    public BudgetPlan() {}
+    @ManyToOne
+    private User user;
 
+    // getters & setters
     public Long getId() { return id; }
-    public Long getUserId() { return userId; }
-    public Integer getMonth() { return month; }
-    public Integer getYear() { return year; }
-    public Double getIncomeTarget() { return incomeTarget; }
-    public Double getExpenseLimit() { return expenseLimit; }
-
     public void setId(Long id) { this.id = id; }
-    public void setUserId(Long userId) { this.userId = userId; }
-    public void setMonth(Integer month) { this.month = month; }
-    public void setYear(Integer year) { this.year = year; }
-    public void setIncomeTarget(Double incomeTarget) { this.incomeTarget = incomeTarget; }
-    public void setExpenseLimit(Double expenseLimit) { this.expenseLimit = expenseLimit; }
+
+    public Double getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(Double totalAmount) { this.totalAmount = totalAmount; }
+
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 }
