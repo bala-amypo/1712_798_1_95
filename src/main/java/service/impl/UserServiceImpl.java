@@ -24,8 +24,14 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new BadRequestException("Email already exists");
         }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(User.ROLE_USER);
         return userRepository.save(user);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow();
     }
 }

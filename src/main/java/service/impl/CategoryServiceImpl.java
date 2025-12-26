@@ -19,10 +19,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category addCategory(Category category) {
-        category.validateType();
         if (categoryRepository.existsByName(category.getName())) {
             throw new BadRequestException("Category already exists");
         }
+        category.validateType();
         return categoryRepository.save(category);
     }
 

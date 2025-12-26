@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.BudgetPlan;
 import com.example.demo.model.User;
 import com.example.demo.repository.BudgetPlanRepository;
@@ -23,10 +22,7 @@ public class BudgetPlanServiceImpl implements BudgetPlanService {
 
     @Override
     public BudgetPlan createBudgetPlan(Long userId, BudgetPlan plan) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        plan.validate();
+        User user = userRepository.findById(userId).orElseThrow();
 
         if (budgetPlanRepository
                 .findByUserAndMonthAndYear(user, plan.getMonth(), plan.getYear())
@@ -35,6 +31,16 @@ public class BudgetPlanServiceImpl implements BudgetPlanService {
         }
 
         plan.setUser(user);
+        plan.validate();
         return budgetPlanRepository.save(plan);
+    }
+
+    @Override
+    public BudgetPlan getBudgetPlan(Long userId, Integer month, Integer year) {
+        User user = userRepository.findById(userId).orElseThrow();
+
+        return budgetPlanRepository
+                .findByUserAndMonthAndYear(user, month, year)
+                .orElseThrow();
     }
 }
