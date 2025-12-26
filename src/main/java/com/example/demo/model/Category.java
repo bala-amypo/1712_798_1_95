@@ -1,65 +1,45 @@
 package com.example.demo.model;
 
+import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
-@Table(name = "budget_summaries")
-public class BudgetSummary {
+@Table(name = "categories")
+public class Category {
 
-    public static final String STATUS_UNDER_LIMIT = "UNDER_LIMIT";
-    public static final String STATUS_OVER_LIMIT = "OVER_LIMIT";
+    public static final String TYPE_INCOME = "INCOME";
+    public static final String TYPE_EXPENSE = "EXPENSE";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private BudgetPlan budgetPlan;
+    @Column(nullable = false, unique = true)
+    private String name;
 
-    private Double totalIncome;
-    private Double totalExpense;
+    @Column(nullable = false)
+    private String type;
 
-    private String status;
+    public Category() {}
 
-    private LocalDateTime generatedAt;
-
-    public BudgetSummary() {}
-
-    public BudgetSummary(Long id, BudgetPlan budgetPlan, Double totalIncome,
-                         Double totalExpense, String status,
-                         LocalDateTime generatedAt) {
+    public Category(Long id, String name, String type) {
         this.id = id;
-        this.budgetPlan = budgetPlan;
-        this.totalIncome = totalIncome;
-        this.totalExpense = totalExpense;
-        this.status = status;
-        this.generatedAt = generatedAt;
+        this.name = name;
+        this.type = type;
     }
 
-    @PrePersist
-    public void onCreate() {
-        this.generatedAt = LocalDateTime.now();
+    public void validateType() {
+        if (!TYPE_INCOME.equals(type) && !TYPE_EXPENSE.equals(type)) {
+            throw new BadRequestException("Invalid category type");
+        }
     }
 
-    // -------- getters & setters --------
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public BudgetPlan getBudgetPlan() { return budgetPlan; }
-    public void setBudgetPlan(BudgetPlan budgetPlan) {
-        this.budgetPlan = budgetPlan;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public Double getTotalIncome() { return totalIncome; }
-    public void setTotalIncome(Double totalIncome) { this.totalIncome = totalIncome; }
-
-    public Double getTotalExpense() { return totalExpense; }
-    public void setTotalExpense(Double totalExpense) { this.totalExpense = totalExpense; }
-
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
-    public LocalDateTime getGeneratedAt() { return generatedAt; }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
 }
