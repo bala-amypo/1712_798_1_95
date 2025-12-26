@@ -4,7 +4,8 @@ import com.example.demo.exception.BadRequestException;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "budget_plans")
+@Table(name = "budget_plans",
+       uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "month", "year"}))
 public class BudgetPlan {
 
     @Id
@@ -12,34 +13,39 @@ public class BudgetPlan {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     private Integer month;
     private Integer year;
+    private Double incomeTarget;
+    private Double expenseLimit;
 
-    private Double totalIncome;
-    private Double totalExpense;
+    @OneToOne(mappedBy = "budgetPlan")
+    private BudgetSummary budgetSummary;
 
     public BudgetPlan() {}
 
     public BudgetPlan(Long id, User user, Integer month, Integer year,
-                      Double totalIncome, Double totalExpense) {
+                      Double incomeTarget, Double expenseLimit) {
         this.id = id;
         this.user = user;
         this.month = month;
         this.year = year;
-        this.totalIncome = totalIncome;
-        this.totalExpense = totalExpense;
+        this.incomeTarget = incomeTarget;
+        this.expenseLimit = expenseLimit;
     }
 
-    // -------- validation --------
     public void validate() {
-        if (month < 1 || month > 12) {
+        if (month == null || month < 1 || month > 12) {
             throw new BadRequestException("Invalid month");
+        }
+        if (incomeTarget < 0 || expenseLimit < 0) {
+            throw new BadRequestException("Amounts must be >= 0");
         }
     }
 
-    // -------- getters & setters --------
+    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -52,9 +58,9 @@ public class BudgetPlan {
     public Integer getYear() { return year; }
     public void setYear(Integer year) { this.year = year; }
 
-    public Double getTotalIncome() { return totalIncome; }
-    public void setTotalIncome(Double totalIncome) { this.totalIncome = totalIncome; }
+    public Double getIncomeTarget() { return incomeTarget; }
+    public void setIncomeTarget(Double incomeTarget) { this.incomeTarget = incomeTarget; }
 
-    public Double getTotalExpense() { return totalExpense; }
-    public void setTotalExpense(Double totalExpense) { this.totalExpense = totalExpense; }
+    public Double getExpenseLimit() { return expenseLimit; }
+    public void setExpenseLimit(Double expenseLimit) { this.expenseLimit = expenseLimit; }
 }

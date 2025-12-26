@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +23,12 @@ public class User {
 
     private String role;
 
+    @OneToMany(mappedBy = "user")
+    private List<TransactionLog> transactions;
+
+    @OneToMany(mappedBy = "user")
+    private List<BudgetPlan> budgetPlans;
+
     public User() {}
 
     public User(Long id, String name, String email, String password, String role) {
@@ -29,10 +36,11 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.role = (role == null) ? ROLE_USER : role;
     }
 
-    // -------- getters & setters --------
+    // getters & setters
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

@@ -1,57 +1,60 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "budget_summary")
+@Table(name = "budget_summaries")
 public class BudgetSummary {
+
+    public static final String STATUS_UNDER_LIMIT = "UNDER_LIMIT";
+    public static final String STATUS_OVER_LIMIT = "OVER_LIMIT";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long budgetPlanId;
+    @OneToOne
+    @JoinColumn(name = "budget_plan_id")
+    private BudgetPlan budgetPlan;
 
-    private Double totalBudget;
+    private Double totalIncome;
     private Double totalExpense;
-    private Double remainingAmount;
+    private String status;
+    private LocalDateTime generatedAt;
 
-    public BudgetSummary() {
-    }
+    public BudgetSummary() {}
 
-    public Long getId() {
-        return id;
-    }
-
-    public Long getBudgetPlanId() {
-        return budgetPlanId;
-    }
-
-    public void setBudgetPlanId(Long budgetPlanId) {
-        this.budgetPlanId = budgetPlanId;
-    }
-
-    public Double getTotalBudget() {
-        return totalBudget;
-    }
-
-    public void setTotalBudget(Double totalBudget) {
-        this.totalBudget = totalBudget;
-    }
-
-    public Double getTotalExpense() {
-        return totalExpense;
-    }
-
-    public void setTotalExpense(Double totalExpense) {
+    public BudgetSummary(Long id, BudgetPlan budgetPlan, Double totalIncome,
+                         Double totalExpense, String status, LocalDateTime generatedAt) {
+        this.id = id;
+        this.budgetPlan = budgetPlan;
+        this.totalIncome = totalIncome;
         this.totalExpense = totalExpense;
+        this.status = status;
+        this.generatedAt = generatedAt;
     }
 
-    public Double getRemainingAmount() {
-        return remainingAmount;
+    @PrePersist
+    public void onCreate() {
+        this.generatedAt = LocalDateTime.now();
     }
 
-    public void setRemainingAmount(Double remainingAmount) {
-        this.remainingAmount = remainingAmount;
-    }
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public BudgetPlan getBudgetPlan() { return budgetPlan; }
+    public void setBudgetPlan(BudgetPlan budgetPlan) { this.budgetPlan = budgetPlan; }
+
+    public Double getTotalIncome() { return totalIncome; }
+    public void setTotalIncome(Double totalIncome) { this.totalIncome = totalIncome; }
+
+    public Double getTotalExpense() { return totalExpense; }
+    public void setTotalExpense(Double totalExpense) { this.totalExpense = totalExpense; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public LocalDateTime getGeneratedAt() { return generatedAt; }
 }

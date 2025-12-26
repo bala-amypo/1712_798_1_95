@@ -2,7 +2,6 @@ package com.example.demo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -13,56 +12,27 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // -------- BAD REQUEST --------
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Map<String, Object>> handleBadRequest(
-            BadRequestException ex) {
-
+    public ResponseEntity<Map<String, Object>> handleBadRequest(BadRequestException ex) {
         return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 
-    // -------- CONFLICT --------
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<Map<String, Object>> handleConflict(
-            ConflictException ex) {
-
+    public ResponseEntity<Map<String, Object>> handleConflict(ConflictException ex) {
         return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
-    // -------- NOT FOUND --------
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFound(
-            ResourceNotFoundException ex) {
-
+    public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    // -------- VALIDATION (OPTIONAL) --------
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidation(
-            MethodArgumentNotValidException ex) {
-
-        return buildResponse(
-                HttpStatus.BAD_REQUEST,
-                "Validation failed"
-        );
-    }
-
-    // -------- GENERIC FALLBACK --------
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleGeneric(
-            Exception ex) {
-
-        return buildResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR,
-                "Internal server error"
-        );
+    public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex) {
+        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
     }
 
-    // -------- COMMON RESPONSE --------
-    private ResponseEntity<Map<String, Object>> buildResponse(
-            HttpStatus status, String message) {
-
+    private ResponseEntity<Map<String, Object>> buildResponse(HttpStatus status, String message) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", status.value());
