@@ -3,11 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.model.TransactionLog;
 import com.example.demo.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.util.List;
 
 @RestController
 @RequestMapping("/transactions")
+@SecurityRequirement(name="bearerAuth")
 public class TransactionController {
 
     private final TransactionService transactionService;
@@ -20,14 +21,11 @@ public class TransactionController {
     public TransactionLog addTransaction(
             @PathVariable Long userId,
             @RequestBody TransactionLog log) {
-
         return transactionService.addTransaction(userId, log);
     }
 
-    @GetMapping("/{userId}")
-    public List<TransactionLog> getUserTransactions(
-            @PathVariable Long userId) {
-
+    @GetMapping("/user/{userId}")
+    public List<TransactionLog> getUserTransactions(@PathVariable Long userId) {
         return transactionService.getUserTransactions(userId);
     }
 }
