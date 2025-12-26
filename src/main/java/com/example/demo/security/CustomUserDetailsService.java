@@ -12,6 +12,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    // ✅ ONLY UserRepository — NOTHING ELSE
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
