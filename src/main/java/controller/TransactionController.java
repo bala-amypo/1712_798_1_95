@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.TransactionLog;
-import com.example.demo.repository.TransactionLogRepository;
+import com.example.demo.service.TransactionService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,23 +10,24 @@ import java.util.List;
 @RequestMapping("/transactions")
 public class TransactionController {
 
-    private final TransactionLogRepository repo;
+    private final TransactionService transactionService;
 
-    public TransactionController(TransactionLogRepository repo) {
-        this.repo = repo;
+    public TransactionController(TransactionService transactionService) {
+        this.transactionService = transactionService;
     }
 
     @PostMapping("/{userId}")
-    public TransactionLog add(
+    public TransactionLog addTransaction(
             @PathVariable Long userId,
             @RequestBody TransactionLog log) {
 
-        log.setUserId(userId);
-        return repo.save(log);
+        return transactionService.addTransaction(userId, log);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<TransactionLog> getByUser(@PathVariable Long userId) {
-        return repo.findByUserId(userId);
+    @GetMapping("/{userId}")
+    public List<TransactionLog> getUserTransactions(
+            @PathVariable Long userId) {
+
+        return transactionService.getUserTransactions(userId);
     }
 }
